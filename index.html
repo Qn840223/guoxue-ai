@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>玄学AI助手 - 面相手相八字运势</title>
+    <title>玄学AI助手 - 八字运势测算</title>
     <style>
         * {
             margin: 0;
@@ -41,52 +41,6 @@
         .header p {
             color: #666;
             font-size: 16px;
-        }
-        
-        .config-box {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .config-box h3 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-        }
-        
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .help-text {
-            font-size: 13px;
-            color: #999;
-            margin-top: 5px;
         }
         
         .tabs {
@@ -159,31 +113,6 @@
             min-height: 100px;
         }
         
-        .upload-box {
-            border: 2px dashed #ddd;
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .upload-box:hover {
-            border-color: #667eea;
-            background: #f9f9f9;
-        }
-        
-        .upload-box input[type="file"] {
-            display: none;
-        }
-        
-        .upload-preview {
-            max-width: 300px;
-            max-height: 300px;
-            margin: 20px auto;
-            border-radius: 10px;
-        }
-        
         .btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -194,6 +123,7 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             font-weight: 500;
+            width: 100%;
         }
         
         .btn:hover {
@@ -258,82 +188,30 @@
             color: #999;
             font-size: 14px;
         }
+
+        .help-text {
+            font-size: 13px;
+            color: #999;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🔮 玄学AI助手</h1>
-            <p>面相、手相、八字、运势一站式服务</p>
-        </div>
-
-        <div class="config-box">
-            <h3>⚙️ API配置</h3>
-            <div class="form-group">
-                <label>API密钥：</label>
-                <input type="password" id="apiKey" value="sk-xjlzds0424" placeholder="请输入你的API密钥" />
-                <div class="help-text">
-                    ✅ 已配置专属API密钥（无限调用）
-                </div>
-            </div>
-            <div class="form-group">
-                <label>API服务：</label>
-                <select id="apiBase">
-                    <option value="https://interialaiapi.xiaojiaixhs.com/v1" selected>备用服务器（推荐）</option>
-                    <option value="http://43.139.203.146:8050/v1">专属服务器</option>
-                    <option value="https://api.deepseek.com/v1">DeepSeek官方</option>
-                    <option value="https://api.openai.com/v1">OpenAI</option>
-                </select>
-            </div>
+            <p>八字、运势、姓名测算一站式服务</p>
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('face')">👤 面相分析</button>
-            <button class="tab" onclick="switchTab('palm')">🖐️ 手相解读</button>
-            <button class="tab" onclick="switchTab('bazi')">📅 八字测算</button>
+            <button class="tab active" onclick="switchTab('bazi')">📅 八字测算</button>
             <button class="tab" onclick="switchTab('fortune')">🌟 运势预测</button>
             <button class="tab" onclick="switchTab('name')">✍️ 姓名测算</button>
-        </div>
-
-        <!-- 面相分析 -->
-        <div id="face" class="tab-content active">
-            <div class="input-box">
-                <label>上传面相照片：</label>
-                <div class="upload-box" onclick="document.getElementById('faceImage').click()">
-                    <input type="file" id="faceImage" accept="image/*" onchange="previewImage(this, 'facePreview')">
-                    <p>📷 点击上传或拖拽照片到这里</p>
-                    <p style="font-size: 12px; color: #999; margin-top: 10px;">支持 JPG、PNG 格式</p>
-                </div>
-                <img id="facePreview" class="upload-preview" style="display:none;">
-            </div>
-            <button class="btn" onclick="analyzeFace()">开始分析面相</button>
-            <div id="faceResult"></div>
-        </div>
-
-        <!-- 手相解读 -->
-        <div id="palm" class="tab-content">
-            <div class="input-box">
-                <label>上传手相照片：</label>
-                <div class="upload-box" onclick="document.getElementById('palmImage').click()">
-                    <input type="file" id="palmImage" accept="image/*" onchange="previewImage(this, 'palmPreview')">
-                    <p>🖐️ 点击上传或拖拽照片到这里</p>
-                    <p style="font-size: 12px; color: #999; margin-top: 10px;">请拍摄清晰的手掌照片</p>
-                </div>
-                <img id="palmPreview" class="upload-preview" style="display:none;">
-            </div>
-            <div class="input-box">
-                <label>选择手掌：</label>
-                <select id="palmHand">
-                    <option value="left">左手</option>
-                    <option value="right">右手</option>
-                </select>
-            </div>
-            <button class="btn" onclick="analyzePalm()">开始解读手相</button>
-            <div id="palmResult"></div>
+            <button class="tab" onclick="switchTab('character')">👤 性格分析</button>
         </div>
 
         <!-- 八字测算 -->
-        <div id="bazi" class="tab-content">
+        <div id="bazi" class="tab-content active">
             <div class="input-box">
                 <label>出生日期：</label>
                 <input type="date" id="birthDate" />
@@ -405,11 +283,33 @@
                     <option value="姓名五格">姓名五格</option>
                     <option value="姓名三才">姓名三才</option>
                     <option value="姓名吉凶">姓名吉凶</option>
-                    <option value="姓名配对">姓名配对</option>
+                    <option value="姓名寓意">姓名寓意</option>
                 </select>
             </div>
             <button class="btn" onclick="analyzeName()">开始测算姓名</button>
             <div id="nameResult"></div>
+        </div>
+
+        <!-- 性格分析 -->
+        <div id="character" class="tab-content">
+            <div class="input-box">
+                <label>出生日期：</label>
+                <input type="date" id="characterDate" />
+            </div>
+            <div class="input-box">
+                <label>性别：</label>
+                <select id="characterGender">
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <label>个人特征（选填）：</label>
+                <textarea id="characterTraits" placeholder="例如：性格内向、喜欢读书、善于交际等"></textarea>
+                <div class="help-text">💡 提供更多信息可以获得更准确的分析</div>
+            </div>
+            <button class="btn" onclick="analyzeCharacter()">开始分析性格</button>
+            <div id="characterResult"></div>
         </div>
 
         <div class="footer">
@@ -419,6 +319,9 @@
     </div>
 
     <script>
+        const API_KEY = '12b9c331f7b376f873550b5e34aedc4ac43cb763be346e741cd75176aa31aab5';
+        const API_BASE = 'https://interialaiapi.xiaojiaixhs.com/v1';
+
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -426,98 +329,33 @@
             document.getElementById(tabName).classList.add('active');
         }
 
-        function previewImage(input, previewId) {
-            const preview = document.getElementById(previewId);
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        async function callAI(messages, temperature = 0.7) {
-            const apiKey = document.getElementById('apiKey').value.trim();
-            const apiBase = document.getElementById('apiBase').value;
-
-            if (!apiKey) {
-                throw new Error('请先在上方配置API密钥');
-            }
-
-            const modelMap = {
-                'https://api.deepseek.com/v1': 'deepseek-chat',
-                'https://api.openai.com/v1': 'gpt-4',
-            };
-
-            const response = await fetch(`${apiBase}/chat/completions`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
-                },
-                body: JSON.stringify({
-                    model: modelMap[apiBase] || 'deepseek-chat',
-                    messages,
-                    temperature
-                })
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error?.message || `调用失败 (${response.status})`);
-            }
-
-            const data = await response.json();
-            return data.choices[0].message.content;
-        }
-
-        async function analyzeFace() {
-            const preview = document.getElementById('facePreview');
-            const resultDiv = document.getElementById('faceResult');
-            
-            if (!preview.src) {
-                resultDiv.innerHTML = '<div class="error-box">❌ 请先上传面相照片</div>';
-                return;
-            }
-
-            resultDiv.innerHTML = '<div class="loading">AI正在分析面相</div>';
-
+        async function callAI(messages, temperature = 0.8) {
             try {
-                const messages = [
-                    { role: 'system', content: '你是一位精通面相学的大师。请根据用户描述的面部特征，详细分析其性格、运势、事业、财运、感情等方面。分析要专业、详细、有说服力。' },
-                    { role: 'user', content: '请帮我分析面相，包括：1.性格特点 2.事业运势 3.财运分析 4.感情婚姻 5.健康状况 6.未来发展建议' }
-                ];
-                const result = await callAI(messages, 0.8);
-                resultDiv.innerHTML = `<div class="result-box"><strong>📊 面相分析结果：</strong><br/><br/>${result}</div>`;
+                const response = await fetch(`${API_BASE}/chat/completions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: 'deepseek-chat',
+                        messages,
+                        temperature
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API调用失败 (${response.status}): ${errorText}`);
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
             } catch (error) {
-                resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
-            }
-        }
-
-        async function analyzePalm() {
-            const preview = document.getElementById('palmPreview');
-            const hand = document.getElementById('palmHand').value;
-            const resultDiv = document.getElementById('palmResult');
-            
-            if (!preview.src) {
-                resultDiv.innerHTML = '<div class="error-box">❌ 请先上传手相照片</div>';
-                return;
-            }
-
-            resultDiv.innerHTML = '<div class="loading">AI正在解读手相</div>';
-
-            try {
-                const handText = hand === 'left' ? '左手' : '右手';
-                const messages = [
-                    { role: 'system', content: '你是一位精通手相学的大师。请根据用户的手掌特征，详细解读生命线、智慧线、感情线、事业线、财运线等，分析其命运、性格、运势。' },
-                    { role: 'user', content: `请帮我解读${handText}手相，包括：1.生命线分析 2.智慧线解读 3.感情线特征 4.事业线走向 5.财运线状况 6.整体运势评价` }
-                ];
-                const result = await callAI(messages, 0.8);
-                resultDiv.innerHTML = `<div class="result-box"><strong>🖐️ ${handText}手相解读：</strong><br/><br/>${result}</div>`;
-            } catch (error) {
-                resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
+                if (error.message.includes('Failed to fetch')) {
+                    throw new Error('网络连接失败，请检查网络连接');
+                }
+                throw error;
             }
         }
 
@@ -536,10 +374,10 @@
 
             try {
                 const messages = [
-                    { role: 'system', content: '你是一位精通八字命理的大师。请根据用户的出生时间，详细分析其八字命盘、五行属性、十神关系、大运流年等，给出专业的命理解读。' },
-                    { role: 'user', content: `请帮我测算八字：\n出生日期：${birthDate}\n出生时辰：${birthHour}\n性别：${gender}\n\n请分析：1.八字命盘 2.五行属性 3.性格特点 4.事业财运 5.婚姻感情 6.健康状况 7.大运流年 8.改运建议` }
+                    { role: 'system', content: '你是一位精通八字命理的大师。请根据用户的出生时间，详细分析其八字命盘、五行属性、十神关系、大运流年等，给出专业的命理解读。回答要详细、专业、有说服力。' },
+                    { role: 'user', content: `请帮我测算八字：\n出生日期：${birthDate}\n出生时辰：${birthHour}\n性别：${gender}\n\n请详细分析：\n1. 八字命盘（年柱、月柱、日柱、时柱）\n2. 五行属性及强弱\n3. 性格特点\n4. 事业财运\n5. 婚姻感情\n6. 健康状况\n7. 大运流年\n8. 改运建议` }
                 ];
-                const result = await callAI(messages, 0.8);
+                const result = await callAI(messages);
                 resultDiv.innerHTML = `<div class="result-box"><strong>📅 八字测算结果：</strong><br/><br/>${result}</div>`;
             } catch (error) {
                 resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
@@ -559,11 +397,12 @@
             resultDiv.innerHTML = '<div class="loading">AI正在预测运势</div>';
 
             try {
+                const today = new Date().toLocaleDateString('zh-CN');
                 const messages = [
                     { role: 'system', content: '你是一位精通命理运势的大师。请根据用户的出生日期和当前时间，详细预测其运势走向，包括幸运指数、注意事项、开运建议等。' },
-                    { role: 'user', content: `请帮我预测${fortuneType}：\n出生日期：${birthDate}\n\n请包括：1.综合运势评分 2.幸运色彩和数字 3.吉凶方位 4.注意事项 5.开运建议 6.具体运势分析` }
+                    { role: 'user', content: `请帮我预测${fortuneType}：\n出生日期：${birthDate}\n今天日期：${today}\n\n请详细分析：\n1. 综合运势评分（1-10分）\n2. 幸运色彩和数字\n3. 吉凶方位\n4. 注意事项\n5. 开运建议\n6. 具体运势分析（事业、财运、感情、健康）` }
                 ];
-                const result = await callAI(messages, 0.8);
+                const result = await callAI(messages);
                 resultDiv.innerHTML = `<div class="result-box"><strong>🌟 ${fortuneType}预测：</strong><br/><br/>${result}</div>`;
             } catch (error) {
                 resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
@@ -586,10 +425,36 @@
             try {
                 const messages = [
                     { role: 'system', content: '你是一位精通姓名学的大师。请根据用户的姓名和出生日期，详细分析其姓名五格、三才配置、吉凶评价等，给出专业的姓名学解读。' },
-                    { role: 'user', content: `请帮我测算姓名：\n姓名：${userName}\n出生日期：${nameDate || '未提供'}\n测算类型：${nameType}\n\n请分析：1.姓名笔画 2.五格数理 3.三才配置 4.吉凶评价 5.性格影响 6.运势影响 7.改名建议` }
+                    { role: 'user', content: `请帮我测算姓名：\n姓名：${userName}\n出生日期：${nameDate || '未提供'}\n测算类型：${nameType}\n\n请详细分析：\n1. 姓名笔画数\n2. 五格数理（天格、人格、地格、外格、总格）\n3. 三才配置（天、人、地）\n4. 吉凶评价\n5. 对性格的影响\n6. 对运势的影响\n7. 改名建议（如有必要）` }
                 ];
-                const result = await callAI(messages, 0.8);
+                const result = await callAI(messages);
                 resultDiv.innerHTML = `<div class="result-box"><strong>✍️ ${nameType}结果：</strong><br/><br/>${result}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
+            }
+        }
+
+        async function analyzeCharacter() {
+            const characterDate = document.getElementById('characterDate').value;
+            const characterGender = document.getElementById('characterGender').value;
+            const characterTraits = document.getElementById('characterTraits').value.trim();
+            const resultDiv = document.getElementById('characterResult');
+            
+            if (!characterDate) {
+                resultDiv.innerHTML = '<div class="error-box">❌ 请选择出生日期</div>';
+                return;
+            }
+
+            resultDiv.innerHTML = '<div class="loading">AI正在分析性格</div>';
+
+            try {
+                const traitsText = characterTraits ? `\n个人特征：${characterTraits}` : '';
+                const messages = [
+                    { role: 'system', content: '你是一位精通心理学和命理学的专家。请根据用户的出生日期和个人特征，详细分析其性格特点、优缺点、适合的职业方向等。' },
+                    { role: 'user', content: `请帮我分析性格：\n出生日期：${characterDate}\n性别：${characterGender}${traitsText}\n\n请详细分析：\n1. 核心性格特征\n2. 优点和长处\n3. 缺点和需要改进的地方\n4. 适合的职业方向\n5. 人际交往特点\n6. 情感表达方式\n7. 个人成长建议` }
+                ];
+                const result = await callAI(messages);
+                resultDiv.innerHTML = `<div class="result-box"><strong>👤 性格分析结果：</strong><br/><br/>${result}</div>`;
             } catch (error) {
                 resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
             }
