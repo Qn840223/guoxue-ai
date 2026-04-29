@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>国学AI助手 - 网页版</title>
+    <title>玄学AI助手 - 面相手相八字运势</title>
     <style>
         * {
             margin: 0;
@@ -89,11 +89,6 @@
             margin-top: 5px;
         }
         
-        .help-text a {
-            color: #667eea;
-            text-decoration: none;
-        }
-        
         .tabs {
             display: flex;
             gap: 10px;
@@ -164,6 +159,31 @@
             min-height: 100px;
         }
         
+        .upload-box {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-box:hover {
+            border-color: #667eea;
+            background: #f9f9f9;
+        }
+        
+        .upload-box input[type="file"] {
+            display: none;
+        }
+        
+        .upload-preview {
+            max-width: 300px;
+            max-height: 300px;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+        
         .btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -232,29 +252,6 @@
             60%, 100% { content: '...'; }
         }
         
-        .example-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-        
-        .example-btn {
-            background: #f0f0f0;
-            border: 1px solid #ddd;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
-        }
-        
-        .example-btn:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-        
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -266,8 +263,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📚 国学AI助手</h1>
-            <p>传承中华文化，让国学学习更简单</p>
+            <h1>🔮 玄学AI助手</h1>
+            <p>面相、手相、八字、运势一站式服务</p>
         </div>
 
         <div class="config-box">
@@ -291,115 +288,137 @@
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('translation')">📖 古文翻译</button>
-            <button class="tab" onclick="switchTab('poetry')">✍️ 诗词创作</button>
-            <button class="tab" onclick="switchTab('couplet')">🎋 对联生成</button>
-            <button class="tab" onclick="switchTab('query')">🔍 典故查询</button>
-            <button class="tab" onclick="switchTab('punctuation')">📝 智能断句</button>
-            <button class="tab" onclick="switchTab('chat')">💬 智能问答</button>
+            <button class="tab active" onclick="switchTab('face')">👤 面相分析</button>
+            <button class="tab" onclick="switchTab('palm')">🖐️ 手相解读</button>
+            <button class="tab" onclick="switchTab('bazi')">📅 八字测算</button>
+            <button class="tab" onclick="switchTab('fortune')">🌟 运势预测</button>
+            <button class="tab" onclick="switchTab('name')">✍️ 姓名测算</button>
         </div>
 
-        <!-- 古文翻译 -->
-        <div id="translation" class="tab-content active">
+        <!-- 面相分析 -->
+        <div id="face" class="tab-content active">
             <div class="input-box">
-                <label>输入古文：</label>
-                <textarea id="translationInput" placeholder="例如：学而时习之，不亦说乎"></textarea>
-                <div class="example-buttons">
-                    <button class="example-btn" onclick="setExample('translationInput', '学而时习之，不亦说乎')">示例1</button>
-                    <button class="example-btn" onclick="setExample('translationInput', '有朋自远方来，不亦乐乎')">示例2</button>
-                    <button class="example-btn" onclick="setExample('translationInput', '温故而知新，可以为师矣')">示例3</button>
+                <label>上传面相照片：</label>
+                <div class="upload-box" onclick="document.getElementById('faceImage').click()">
+                    <input type="file" id="faceImage" accept="image/*" onchange="previewImage(this, 'facePreview')">
+                    <p>📷 点击上传或拖拽照片到这里</p>
+                    <p style="font-size: 12px; color: #999; margin-top: 10px;">支持 JPG、PNG 格式</p>
                 </div>
+                <img id="facePreview" class="upload-preview" style="display:none;">
             </div>
-            <button class="btn" onclick="translate()">开始翻译</button>
-            <div id="translationResult"></div>
+            <button class="btn" onclick="analyzeFace()">开始分析面相</button>
+            <div id="faceResult"></div>
         </div>
 
-        <!-- 诗词创作 -->
-        <div id="poetry" class="tab-content">
+        <!-- 手相解读 -->
+        <div id="palm" class="tab-content">
             <div class="input-box">
-                <label>主题：</label>
-                <input type="text" id="poetryTheme" placeholder="例如：春天、思乡、友情" />
+                <label>上传手相照片：</label>
+                <div class="upload-box" onclick="document.getElementById('palmImage').click()">
+                    <input type="file" id="palmImage" accept="image/*" onchange="previewImage(this, 'palmPreview')">
+                    <p>🖐️ 点击上传或拖拽照片到这里</p>
+                    <p style="font-size: 12px; color: #999; margin-top: 10px;">请拍摄清晰的手掌照片</p>
+                </div>
+                <img id="palmPreview" class="upload-preview" style="display:none;">
             </div>
             <div class="input-box">
-                <label>格式：</label>
-                <select id="poetryStyle">
-                    <option>七言绝句</option>
-                    <option>五言绝句</option>
-                    <option>七言律诗</option>
-                    <option>五言律诗</option>
+                <label>选择手掌：</label>
+                <select id="palmHand">
+                    <option value="left">左手</option>
+                    <option value="right">右手</option>
                 </select>
             </div>
-            <button class="btn" onclick="createPoetry()">开始创作</button>
-            <div id="poetryResult"></div>
+            <button class="btn" onclick="analyzePalm()">开始解读手相</button>
+            <div id="palmResult"></div>
         </div>
 
-        <!-- 对联生成 -->
-        <div id="couplet" class="tab-content">
+        <!-- 八字测算 -->
+        <div id="bazi" class="tab-content">
             <div class="input-box">
-                <label>上联：</label>
-                <input type="text" id="coupletInput" placeholder="例如：春回大地千山秀" />
-                <div class="example-buttons">
-                    <button class="example-btn" onclick="setExample('coupletInput', '春回大地千山秀')">示例1</button>
-                    <button class="example-btn" onclick="setExample('coupletInput', '风声雨声读书声声声入耳')">示例2</button>
-                    <button class="example-btn" onclick="setExample('coupletInput', '天增岁月人增寿')">示例3</button>
-                </div>
-            </div>
-            <button class="btn" onclick="createCouplet()">生成下联</button>
-            <div id="coupletResult"></div>
-        </div>
-
-        <!-- 典故查询 -->
-        <div id="query" class="tab-content">
-            <div class="input-box">
-                <label>关键词：</label>
-                <input type="text" id="queryInput" placeholder="例如：卧薪尝胆、孔子、赤壁之战" />
+                <label>出生日期：</label>
+                <input type="date" id="birthDate" />
             </div>
             <div class="input-box">
-                <label>类型：</label>
-                <select id="queryType">
-                    <option value="allusion">典故</option>
-                    <option value="person">历史人物</option>
-                    <option value="event">历史事件</option>
+                <label>出生时辰：</label>
+                <select id="birthHour">
+                    <option value="子时">子时 (23:00-01:00)</option>
+                    <option value="丑时">丑时 (01:00-03:00)</option>
+                    <option value="寅时">寅时 (03:00-05:00)</option>
+                    <option value="卯时">卯时 (05:00-07:00)</option>
+                    <option value="辰时">辰时 (07:00-09:00)</option>
+                    <option value="巳时">巳时 (09:00-11:00)</option>
+                    <option value="午时">午时 (11:00-13:00)</option>
+                    <option value="未时">未时 (13:00-15:00)</option>
+                    <option value="申时">申时 (15:00-17:00)</option>
+                    <option value="酉时">酉时 (17:00-19:00)</option>
+                    <option value="戌时">戌时 (19:00-21:00)</option>
+                    <option value="亥时">亥时 (21:00-23:00)</option>
                 </select>
             </div>
-            <button class="btn" onclick="queryAllusion()">开始查询</button>
-            <div id="queryResult"></div>
+            <div class="input-box">
+                <label>性别：</label>
+                <select id="gender">
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                </select>
+            </div>
+            <button class="btn" onclick="analyzeBazi()">开始测算八字</button>
+            <div id="baziResult"></div>
         </div>
 
-        <!-- 智能断句 -->
-        <div id="punctuation" class="tab-content">
+        <!-- 运势预测 -->
+        <div id="fortune" class="tab-content">
             <div class="input-box">
-                <label>输入无标点古文：</label>
-                <textarea id="punctuationInput" placeholder="例如：子曰学而时习之不亦说乎有朋自远方来不亦乐乎"></textarea>
+                <label>出生日期：</label>
+                <input type="date" id="fortuneDate" />
             </div>
-            <button class="btn" onclick="addPunctuation()">开始断句</button>
-            <div id="punctuationResult"></div>
+            <div class="input-box">
+                <label>预测类型：</label>
+                <select id="fortuneType">
+                    <option value="今日运势">今日运势</option>
+                    <option value="本周运势">本周运势</option>
+                    <option value="本月运势">本月运势</option>
+                    <option value="今年运势">今年运势</option>
+                    <option value="事业运">事业运</option>
+                    <option value="财运">财运</option>
+                    <option value="感情运">感情运</option>
+                    <option value="健康运">健康运</option>
+                </select>
+            </div>
+            <button class="btn" onclick="predictFortune()">开始预测运势</button>
+            <div id="fortuneResult"></div>
         </div>
 
-        <!-- 智能问答 -->
-        <div id="chat" class="tab-content">
-            <div id="chatMessages" style="max-height: 400px; overflow-y: auto; margin-bottom: 20px;"></div>
+        <!-- 姓名测算 -->
+        <div id="name" class="tab-content">
             <div class="input-box">
-                <label>输入问题：</label>
-                <textarea id="chatInput" rows="3" placeholder="例如：孔子的教育思想是什么？"></textarea>
-                <div class="example-buttons">
-                    <button class="example-btn" onclick="setExample('chatInput', '《论语》中有哪些关于学习的名言？')">示例1</button>
-                    <button class="example-btn" onclick="setExample('chatInput', '请解释一下"仁义礼智信"的含义')">示例2</button>
-                    <button class="example-btn" onclick="setExample('chatInput', '唐诗和宋词有什么区别？')">示例3</button>
-                </div>
+                <label>姓名：</label>
+                <input type="text" id="userName" placeholder="请输入姓名" />
             </div>
-            <button class="btn" onclick="chat()">发送</button>
+            <div class="input-box">
+                <label>出生日期：</label>
+                <input type="date" id="nameDate" />
+            </div>
+            <div class="input-box">
+                <label>测算类型：</label>
+                <select id="nameType">
+                    <option value="姓名五格">姓名五格</option>
+                    <option value="姓名三才">姓名三才</option>
+                    <option value="姓名吉凶">姓名吉凶</option>
+                    <option value="姓名配对">姓名配对</option>
+                </select>
+            </div>
+            <button class="btn" onclick="analyzeName()">开始测算姓名</button>
+            <div id="nameResult"></div>
         </div>
 
         <div class="footer">
-            <p>📚 传承中华文化，让国学学习更简单</p>
-            <p style="margin-top: 10px;">Made with ❤️ for Chinese Culture</p>
+            <p>🔮 仅供娱乐参考，请勿过度迷信</p>
+            <p style="margin-top: 10px;">Made with ❤️ for Fortune Telling</p>
         </div>
     </div>
 
     <script>
-        let chatHistory = [];
-
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -407,8 +426,16 @@
             document.getElementById(tabName).classList.add('active');
         }
 
-        function setExample(inputId, text) {
-            document.getElementById(inputId).value = text;
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         async function callAI(messages, temperature = 0.7) {
@@ -422,7 +449,6 @@
             const modelMap = {
                 'https://api.deepseek.com/v1': 'deepseek-chat',
                 'https://api.openai.com/v1': 'gpt-4',
-                'https://dashscope.aliyuncs.com/compatible-mode/v1': 'qwen-plus'
             };
 
             const response = await fetch(`${apiBase}/chat/completions`, {
@@ -447,169 +473,127 @@
             return data.choices[0].message.content;
         }
 
-        async function translate() {
-            const input = document.getElementById('translationInput').value.trim();
-            const resultDiv = document.getElementById('translationResult');
+        async function analyzeFace() {
+            const preview = document.getElementById('facePreview');
+            const resultDiv = document.getElementById('faceResult');
             
-            if (!input) {
-                resultDiv.innerHTML = '<div class="error-box">❌ 请输入古文</div>';
+            if (!preview.src) {
+                resultDiv.innerHTML = '<div class="error-box">❌ 请先上传面相照片</div>';
                 return;
             }
 
-            resultDiv.innerHTML = '<div class="loading">翻译中，请稍候</div>';
+            resultDiv.innerHTML = '<div class="loading">AI正在分析面相</div>';
 
             try {
                 const messages = [
-                    { role: 'system', content: '你是一位精通古汉语的国学专家。请将文言文翻译成现代汉语，要求准确、流畅、保留文学美感。' },
-                    { role: 'user', content: `请翻译：${input}` }
-                ];
-                const result = await callAI(messages);
-                resultDiv.innerHTML = `<div class="result-box"><strong>原文：</strong><br/>${input}<br/><br/><strong>译文：</strong><br/>${result}</div>`;
-            } catch (error) {
-                resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
-            }
-        }
-
-        async function createPoetry() {
-            const theme = document.getElementById('poetryTheme').value.trim();
-            const style = document.getElementById('poetryStyle').value;
-            const resultDiv = document.getElementById('poetryResult');
-            
-            if (!theme) {
-                resultDiv.innerHTML = '<div class="error-box">❌ 请输入主题</div>';
-                return;
-            }
-
-            resultDiv.innerHTML = '<div class="loading">创作中，请稍候</div>';
-
-            try {
-                const messages = [
-                    { role: 'system', content: `你是一位才华横溢的古代诗人。请创作一首${style}，严格遵守格律规则，意境优美，用词典雅。` },
-                    { role: 'user', content: `主题：${theme}` }
-                ];
-                const result = await callAI(messages, 0.9);
-                resultDiv.innerHTML = `<div class="result-box"><strong>《${theme}》</strong><br/><br/>${result}</div>`;
-            } catch (error) {
-                resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
-            }
-        }
-
-        async function createCouplet() {
-            const input = document.getElementById('coupletInput').value.trim();
-            const resultDiv = document.getElementById('coupletResult');
-            
-            if (!input) {
-                resultDiv.innerHTML = '<div class="error-box">❌ 请输入上联</div>';
-                return;
-            }
-
-            resultDiv.innerHTML = '<div class="loading">生成中，请稍候</div>';
-
-            try {
-                const messages = [
-                    { role: 'system', content: '你是一位精通对联创作的专家。请根据上联创作对仗工整的下联，并提供横批。格式：下联：xxx\\n横批：xxx' },
-                    { role: 'user', content: `上联：${input}` }
+                    { role: 'system', content: '你是一位精通面相学的大师。请根据用户描述的面部特征，详细分析其性格、运势、事业、财运、感情等方面。分析要专业、详细、有说服力。' },
+                    { role: 'user', content: '请帮我分析面相，包括：1.性格特点 2.事业运势 3.财运分析 4.感情婚姻 5.健康状况 6.未来发展建议' }
                 ];
                 const result = await callAI(messages, 0.8);
-                resultDiv.innerHTML = `<div class="result-box"><strong>上联：</strong>${input}<br/><br/>${result}</div>`;
+                resultDiv.innerHTML = `<div class="result-box"><strong>📊 面相分析结果：</strong><br/><br/>${result}</div>`;
             } catch (error) {
                 resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
             }
         }
 
-        async function queryAllusion() {
-            const input = document.getElementById('queryInput').value.trim();
-            const type = document.getElementById('queryType').value;
-            const resultDiv = document.getElementById('queryResult');
+        async function analyzePalm() {
+            const preview = document.getElementById('palmPreview');
+            const hand = document.getElementById('palmHand').value;
+            const resultDiv = document.getElementById('palmResult');
             
-            if (!input) {
-                resultDiv.innerHTML = '<div class="error-box">❌ 请输入关键词</div>';
+            if (!preview.src) {
+                resultDiv.innerHTML = '<div class="error-box">❌ 请先上传手相照片</div>';
                 return;
             }
 
-            resultDiv.innerHTML = '<div class="loading">查询中，请稍候</div>';
+            resultDiv.innerHTML = '<div class="loading">AI正在解读手相</div>';
 
             try {
-                const typeMap = { allusion: '典故', person: '历史人物', event: '历史事件' };
+                const handText = hand === 'left' ? '左手' : '右手';
                 const messages = [
-                    { role: 'system', content: `你是一位博学的国学专家。请详细解释${typeMap[type]}，包括出处、含义、背景和相关故事。` },
-                    { role: 'user', content: `请解释：${input}` }
+                    { role: 'system', content: '你是一位精通手相学的大师。请根据用户的手掌特征，详细解读生命线、智慧线、感情线、事业线、财运线等，分析其命运、性格、运势。' },
+                    { role: 'user', content: `请帮我解读${handText}手相，包括：1.生命线分析 2.智慧线解读 3.感情线特征 4.事业线走向 5.财运线状况 6.整体运势评价` }
                 ];
-                const result = await callAI(messages);
-                resultDiv.innerHTML = `<div class="result-box"><strong>${input}</strong><br/><br/>${result}</div>`;
+                const result = await callAI(messages, 0.8);
+                resultDiv.innerHTML = `<div class="result-box"><strong>🖐️ ${handText}手相解读：</strong><br/><br/>${result}</div>`;
             } catch (error) {
                 resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
             }
         }
 
-        async function addPunctuation() {
-            const input = document.getElementById('punctuationInput').value.trim();
-            const resultDiv = document.getElementById('punctuationResult');
+        async function analyzeBazi() {
+            const birthDate = document.getElementById('birthDate').value;
+            const birthHour = document.getElementById('birthHour').value;
+            const gender = document.getElementById('gender').value;
+            const resultDiv = document.getElementById('baziResult');
             
-            if (!input) {
-                resultDiv.innerHTML = '<div class="error-box">❌ 请输入古文</div>';
+            if (!birthDate) {
+                resultDiv.innerHTML = '<div class="error-box">❌ 请选择出生日期</div>';
                 return;
             }
 
-            resultDiv.innerHTML = '<div class="loading">断句中，请稍候</div>';
+            resultDiv.innerHTML = '<div class="loading">AI正在测算八字</div>';
 
             try {
                 const messages = [
-                    { role: 'system', content: '你是一位精通古汉语的专家。请为无标点古文添加正确的标点符号。只返回添加标点后的文本，不要其他说明。' },
-                    { role: 'user', content: input }
+                    { role: 'system', content: '你是一位精通八字命理的大师。请根据用户的出生时间，详细分析其八字命盘、五行属性、十神关系、大运流年等，给出专业的命理解读。' },
+                    { role: 'user', content: `请帮我测算八字：\n出生日期：${birthDate}\n出生时辰：${birthHour}\n性别：${gender}\n\n请分析：1.八字命盘 2.五行属性 3.性格特点 4.事业财运 5.婚姻感情 6.健康状况 7.大运流年 8.改运建议` }
                 ];
-                const result = await callAI(messages);
-                resultDiv.innerHTML = `<div class="result-box"><strong>原文：</strong><br/>${input}<br/><br/><strong>断句后：</strong><br/>${result}</div>`;
+                const result = await callAI(messages, 0.8);
+                resultDiv.innerHTML = `<div class="result-box"><strong>📅 八字测算结果：</strong><br/><br/>${result}</div>`;
             } catch (error) {
                 resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
             }
         }
 
-        async function chat() {
-            const input = document.getElementById('chatInput').value.trim();
-            const messagesDiv = document.getElementById('chatMessages');
+        async function predictFortune() {
+            const birthDate = document.getElementById('fortuneDate').value;
+            const fortuneType = document.getElementById('fortuneType').value;
+            const resultDiv = document.getElementById('fortuneResult');
             
-            if (!input) {
+            if (!birthDate) {
+                resultDiv.innerHTML = '<div class="error-box">❌ 请选择出生日期</div>';
                 return;
             }
 
-            // 添加用户消息
-            chatHistory.push({ role: 'user', content: input });
-            messagesDiv.innerHTML += `<div class="result-box" style="background: #e3f2fd;"><strong>你：</strong><br/>${input}</div>`;
-            document.getElementById('chatInput').value = '';
-
-            // 显示加载状态
-            messagesDiv.innerHTML += '<div class="loading" id="chatLoading">AI思考中</div>';
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            resultDiv.innerHTML = '<div class="loading">AI正在预测运势</div>';
 
             try {
-                const systemPrompt = { 
-                    role: 'system', 
-                    content: '你是一位博学的国学专家和教师。你精通中国古代文学、历史、哲学和文化。请用通俗易懂的语言回答用户关于国学的问题。' 
-                };
-                const messages = [systemPrompt, ...chatHistory];
-                const result = await callAI(messages);
-                
-                // 移除加载状态
-                document.getElementById('chatLoading').remove();
-                
-                // 添加AI回复
-                chatHistory.push({ role: 'assistant', content: result });
-                messagesDiv.innerHTML += `<div class="result-box"><strong>AI：</strong><br/>${result}</div>`;
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                const messages = [
+                    { role: 'system', content: '你是一位精通命理运势的大师。请根据用户的出生日期和当前时间，详细预测其运势走向，包括幸运指数、注意事项、开运建议等。' },
+                    { role: 'user', content: `请帮我预测${fortuneType}：\n出生日期：${birthDate}\n\n请包括：1.综合运势评分 2.幸运色彩和数字 3.吉凶方位 4.注意事项 5.开运建议 6.具体运势分析` }
+                ];
+                const result = await callAI(messages, 0.8);
+                resultDiv.innerHTML = `<div class="result-box"><strong>🌟 ${fortuneType}预测：</strong><br/><br/>${result}</div>`;
             } catch (error) {
-                document.getElementById('chatLoading').remove();
-                messagesDiv.innerHTML += `<div class="error-box">❌ ${error.message}</div>`;
+                resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
             }
         }
 
-        // 回车发送
-        document.getElementById('chatInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                chat();
+        async function analyzeName() {
+            const userName = document.getElementById('userName').value.trim();
+            const nameDate = document.getElementById('nameDate').value;
+            const nameType = document.getElementById('nameType').value;
+            const resultDiv = document.getElementById('nameResult');
+            
+            if (!userName) {
+                resultDiv.innerHTML = '<div class="error-box">❌ 请输入姓名</div>';
+                return;
             }
-        });
+
+            resultDiv.innerHTML = '<div class="loading">AI正在测算姓名</div>';
+
+            try {
+                const messages = [
+                    { role: 'system', content: '你是一位精通姓名学的大师。请根据用户的姓名和出生日期，详细分析其姓名五格、三才配置、吉凶评价等，给出专业的姓名学解读。' },
+                    { role: 'user', content: `请帮我测算姓名：\n姓名：${userName}\n出生日期：${nameDate || '未提供'}\n测算类型：${nameType}\n\n请分析：1.姓名笔画 2.五格数理 3.三才配置 4.吉凶评价 5.性格影响 6.运势影响 7.改名建议` }
+                ];
+                const result = await callAI(messages, 0.8);
+                resultDiv.innerHTML = `<div class="result-box"><strong>✍️ ${nameType}结果：</strong><br/><br/>${result}</div>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error-box">❌ ${error.message}</div>`;
+            }
+        }
     </script>
 </body>
 </html>
