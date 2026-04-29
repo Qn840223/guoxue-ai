@@ -319,8 +319,11 @@
     </div>
 
     <script>
-        const API_KEY = '12b9c331f7b376f873550b5e34aedc4ac43cb763be346e741cd75176aa31aab5';
-        const API_BASE = 'https://interialaiapi.xiaojiaixhs.com/v1';
+        // 使用 AnyNetGate 代理服务访问 HTTP API
+        const API_KEY = 'sk-xjlzds0424';
+        const ORIGINAL_API = 'http://43.139.203.146:8050/v1';
+        const PROXY_URL = 'https://anynetgate.cn/';
+        const API_BASE = PROXY_URL + ORIGINAL_API;
 
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -329,9 +332,9 @@
             document.getElementById(tabName).classList.add('active');
         }
 
-        async function callAI(messages, temperature = 0.8) {
+        async function callAI(messages) {
             try {
-                console.log('Calling API with:', { API_BASE, messages });
+                console.log('使用代理访问 API:', API_BASE);
                 
                 const response = await fetch(`${API_BASE}/chat/completions`, {
                     method: 'POST',
@@ -341,13 +344,11 @@
                     },
                     body: JSON.stringify({
                         model: 'deepseek-chat',
-                        messages: messages,
-                        temperature: temperature,
-                        max_tokens: 2000
+                        messages: messages
                     })
                 });
 
-                console.log('Response status:', response.status);
+                console.log('Response Status:', response.status);
 
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -364,10 +365,7 @@
                     throw new Error('API返回格式错误');
                 }
             } catch (error) {
-                console.error('Error:', error);
-                if (error.message.includes('Failed to fetch')) {
-                    throw new Error('网络连接失败，请检查网络连接');
-                }
+                console.error('API Error:', error);
                 throw error;
             }
         }
