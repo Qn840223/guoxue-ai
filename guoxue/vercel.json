@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "name": "guoxue-ai",
+  "builds": [
+    {
+      "src": "guoxue-web.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/guoxue-web.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/guoxue-web.html"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-dotenv==1.0.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# AI相关
+openai==1.10.0
+langchain==0.1.4
+langchain-openai==0.0.5
+chromadb==0.4.22
+
+# 数据处理
+pandas==2.2.0
+numpy==1.26.3
+
+# 中文处理
+jieba==0.42.1
+pypinyin==0.50.0
+
+# HTTP客户端
+httpx==0.26.0
+aiohttp==3.9.1
+
+# 数据库
+sqlalchemy==2.0.25
+
+# 工具
+python-multipart==0.0.6
