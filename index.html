@@ -331,6 +331,8 @@
 
         async function callAI(messages, temperature = 0.8) {
             try {
+                console.log('Calling API with:', { API_BASE, messages });
+                
                 const response = await fetch(`${API_BASE}/chat/completions`, {
                     method: 'POST',
                     headers: {
@@ -339,19 +341,30 @@
                     },
                     body: JSON.stringify({
                         model: 'deepseek-chat',
-                        messages,
-                        temperature
+                        messages: messages,
+                        temperature: temperature,
+                        max_tokens: 2000
                     })
                 });
 
+                console.log('Response status:', response.status);
+
                 if (!response.ok) {
                     const errorText = await response.text();
+                    console.error('API Error:', errorText);
                     throw new Error(`API调用失败 (${response.status}): ${errorText}`);
                 }
 
                 const data = await response.json();
-                return data.choices[0].message.content;
+                console.log('API Response:', data);
+                
+                if (data.choices && data.choices[0] && data.choices[0].message) {
+                    return data.choices[0].message.content;
+                } else {
+                    throw new Error('API返回格式错误');
+                }
             } catch (error) {
+                console.error('Error:', error);
                 if (error.message.includes('Failed to fetch')) {
                     throw new Error('网络连接失败，请检查网络连接');
                 }
