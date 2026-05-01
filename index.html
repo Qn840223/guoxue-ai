@@ -320,8 +320,8 @@
 
     <script>
         const API_KEY = 'sk-xjlzds0424';
-        // 使用原始服务器（通过 CORS 代理）
-        const API_URL = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://43.139.203.146:8050/v1/chat/completions');
+        // AnyNetGate 代理：目标URL必须是HTTPS，拼在代理地址后面
+        const PROXY_URL = 'https://anynetgate.cn/?https://api.deepseek.com/v1/chat/completions';
 
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -336,11 +336,13 @@
                 messages: messages
             };
 
-            const response = await fetch(API_URL, {
+            const response = await fetch(PROXY_URL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${API_KEY}`
+                    'x-cors-headers': JSON.stringify({
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    })
                 },
                 body: JSON.stringify(requestBody)
             });
