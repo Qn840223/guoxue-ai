@@ -320,8 +320,8 @@
 
     <script>
         const API_KEY = 'sk-xjlzds0424';
-        // AnyNetGate 代理：目标URL必须是HTTPS，拼在代理地址后面
-        const PROXY_URL = 'https://anynetgate.cn/?https://api.deepseek.com/v1/chat/completions';
+        // AnyNetGate 代理专属服务器（HTTP转HTTPS代理）
+        const PROXY_URL = 'https://anynetgate.cn/?http://43.139.203.146:8050/v1/chat/completions';
 
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
